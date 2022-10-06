@@ -34,6 +34,7 @@ func NewServer(ip string, port int) *ServerObj {
 func (this *ServerObj) BroadCast(user *User, msg string) {
 	uid := strconv.Itoa(user.Uid)
 	msg = "[" + uid + "]" + user.Name + " " + msg + "\n"
+	//用strings.Builder 方式是 稳定性和效率最高的，就是写起来比较麻烦
 	// var builder strings.Builder
 	// builder.Grow(50)
 	// builder.WriteString("[")

@@ -34,9 +34,8 @@ func init() {
 func NewUser(conn net.Conn, server *ServerObj) *User {
 	NowUserId += 1
 	user := &User{
-		// Name: conn.RemoteAddr().String(),
 		Uid:    NowUserId,
-		Name:   fmt.Sprintf("sc%d", NowUserId),
+		Name:   fmt.Sprintf("guest%d", NowUserId),
 		Addr:   conn.RemoteAddr().String(),
 		C:      make(chan string),
 		Conn:   conn,
@@ -114,10 +113,6 @@ func (this *User) commandRename(msg string, next *bool) {
 	server := this.Server
 	// newName := msg[7:]
 	newName := strings.Split(msg, "|")[1] //通过strings.Split也可以实现获取新用户名
-	// if _, ok := server.OnlineMap[newName]; ok {
-	// 	this.SendMessage("用户名:" + newName + " 已存在，修改失败...\n")
-	// 	return
-	// }
 	//验证用户名是否重复
 	for uid, user := range server.OnlineMap {
 		if uid != this.Uid && newName == user.Name {
