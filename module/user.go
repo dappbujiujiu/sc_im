@@ -132,7 +132,7 @@ func (this *User) commandRename(msg string, next *bool) {
 	this.SendMessage("您的用户名已经修改成:" + newName + "\n")
 }
 
-//命令逻辑-to (私聊)
+//命令逻辑-to (私聊)  
 func (this *User) commandTo(msg string, next *bool) {
 	if len(msg) <= 3 || msg[:3] != "to|" {
 		return
