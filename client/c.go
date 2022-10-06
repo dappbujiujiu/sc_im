@@ -120,7 +120,7 @@ func (this *Client) RequestWho() bool {
 //公聊模式
 func (this *Client) RequestPublicChat() {
 	var sendMsg string
-	fmt.Println(">>>>>>>>欢迎进入公聊模式")
+	fmt.Println(">>>>>>>>欢迎进入公聊模式, 输入quit退出")
 	fmt.Scanln(&sendMsg)
 
 	for sendMsg != "quit" {
