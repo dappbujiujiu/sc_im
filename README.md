@@ -3,7 +3,7 @@ golang im server &amp; client (for study)
 
 # GUIDE 
 ## EDIT: 
-go.mod require github.com/dappbujiujiu/sc_im v1.0.2
+go.mod require github.com/dappbujiujiu/sc_im v1.0.5
 
 ## COMMAND: 
 go mod download 
@@ -16,7 +16,7 @@ server := scImServer.NewServer(Host, Port)
 ```
 
 ## Client Tool
-cd \`go env GOMODCACHE\`/github.com/dappbujiujiu/sc_im@v1.0.2
+cd \`go env GOMODCACHE\`/github.com/dappbujiujiu/sc_im@v1.0.5
 
 sudo go build -o ./im_client client/c.go
 
