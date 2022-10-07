@@ -1,12 +1,15 @@
 package module
 
 import (
+	"math/rand"
 	"fmt" //前面加 _ 只执行init函数不回真正的导入包
 	"io/fs"
 	"net"
 	"reflect"
 	"strconv"
 	"strings"
+
+	model "github.com/dappbujiujiu/sc_im/model"
 )
 
 var _ = fs.ErrExist //防止引入包未使用报错
@@ -18,6 +21,7 @@ var CommandMap map[string]string //处理用户的消息命令映射 key => func
 type User struct {
 	Uid    int         //用户id
 	Name   string      //客户端名称
+	Phone  string      //手机号
 	Addr   string      //客户端地址
 	C      chan string //消息管道
 	Conn   net.Conn    //socket链接
@@ -30,12 +34,33 @@ func init() {
 	CommandMap["rename"] = "commandRename"
 }
 
+//注册一个新用户
+func UserRegister() (uid int, uName string, uPhone string, uSex string){
+	m := &model.User{}
+	// phone := rand.Int63n(19999999999) + 10000000000
+	phone := rand.Int63n(19999999999-10000000000) + 10000000000
+	uName = strconv.Itoa(int(phone))
+	uPhone = uName
+	sexInt := rand.Intn(2) + 1
+	sexMap := map[int]string {
+		1: "m",
+		2: "f",
+	}
+	uSex = sexMap[sexInt]
+	uid, err, _ := m.Register(uName, uPhone, uSex)
+	if err != nil {
+		fmt.Println("register new user err:", err)
+	}
+	return 
+}
+
 //创建user对象api
 func NewUser(conn net.Conn, server *ServerObj) *User {
+	uid, uName, _, _ := UserRegister()
 	NowUserId += 1
 	user := &User{
-		Uid:    NowUserId,
-		Name:   fmt.Sprintf("guest%d", NowUserId),
+		Uid:    uid,
+		Name:   uName,
 		Addr:   conn.RemoteAddr().String(),
 		C:      make(chan string),
 		Conn:   conn,
@@ -127,7 +152,7 @@ func (this *User) commandRename(msg string, next *bool) {
 	this.SendMessage("您的用户名已经修改成:" + newName + "\n")
 }
 
-//命令逻辑-to (私聊)  
+//命令逻辑-to (私聊)
 func (this *User) commandTo(msg string, next *bool) {
 	if len(msg) <= 3 || msg[:3] != "to|" {
 		return

@@ -9,7 +9,6 @@ import (
 	"time"
 )
 var _ = strconv.ErrRange
-
 type ServerObj struct {
 	Ip        string
 	Port      int
